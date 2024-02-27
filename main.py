@@ -1,7 +1,7 @@
 from download import download_video
 from tqdm import tqdm
 from login import sesskey, avaeducacaosession, selected_course, BeautifulSoup
-from utils import concat_path, re, clear_folder_name, create_folder, headers_api
+from utils import concat_path, re, clear_folder_name, create_folder, headers_api, shorten_folder_name
 
 def list_sections(course_link):
   sectionid = 0  # Inicializa o sectionid com 0
@@ -73,7 +73,7 @@ def process_sections(data_modules):
 
 def get_download(main_course_folder, data_download):
   for index, (name, url) in enumerate(tqdm(data_download.items(), desc="Downloading Videos"), start=1):
-    folder_name = concat_path(main_course_folder, f'{index:03d} - {name}')
+    folder_name = shorten_folder_name(concat_path(main_course_folder, f'{index:03d} - {name}'))
     referer = {'Referer': 'https://saladeaula.avaeducacao.com.br/'}
     download_video(url, folder_name, referer)
 
