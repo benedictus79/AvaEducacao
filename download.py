@@ -3,7 +3,7 @@ import yt_dlp
 
 def download_video(url, output_name, session):
   ydl_opts = {
-    'format': 'bv+ba/b',
+    'format': 'bv[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best',
     'outtmpl': output_name,
     'quiet': True,
     'no_progress': True,
@@ -15,6 +15,8 @@ def download_video(url, output_name, session):
     'buffersize': 104857600,
     'retries': 30,
     'continuedl': True,
+    'windows_filenames': True,
+    'trim-filenames': 210,
     'extractor_retries': 10,
   }
   with yt_dlp.YoutubeDL(ydl_opts) as ydl:
