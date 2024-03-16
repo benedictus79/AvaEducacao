@@ -85,6 +85,10 @@ class SilentLogger(object):
     logger(msg, error=True)
 
 
+def random_sleep():
+  sleep(random.randint(20, 60))
+
+
 headers_api = {
     'Accept': 'application/json, text/javascript, */*; q=0.01',
     'Accept-Language': 'pt-BR,pt;q=0.8',

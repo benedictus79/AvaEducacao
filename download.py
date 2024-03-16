@@ -1,4 +1,4 @@
-from utils import SilentLogger
+from utils import SilentLogger, random_sleep
 import yt_dlp
 
 def download_video(url, output_name, session):
@@ -19,5 +19,14 @@ def download_video(url, output_name, session):
     'trim-filenames': 210,
     'extractor_retries': 10,
   }
-  with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-    ydl.download([url])
+  while True:
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+      try:
+        ydl.download([url])
+        return
+      except yt_dlp.utils.DownloadError as e:
+        if '403' or '429' in str(e):
+          msg = f'''Verifique manualmente, se não baixou tente novamente mais tarde: {ydl_opts['outtmpl']} ||| {url}'''
+          return
+      except PermissionError as e:
+        random_sleep()
