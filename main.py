@@ -73,9 +73,13 @@ def process_sections(data_modules):
 
 def get_download(main_course_folder, data_download):
   for index, (name, url) in enumerate(tqdm(data_download.items(), desc="Downloading Videos"), start=1):
-    folder_name = shorten_folder_name(concat_path(main_course_folder, f'{index:03d} - {name}'))
+    folder_name = shorten_folder_name(concat_path(main_course_folder, f'{index:03d} - {clear_folder_name(name)}'))
     referer = {'Referer': 'https://saladeaula.avaeducacao.com.br/'}
-    download_video(url, folder_name, referer)
+    if 'vimeo' in url:
+      download_video(url, folder_name, referer)
+    else:
+      with open(f"{folder_name}.html", "w", encoding='utf-8') as file:
+        file.write(str(url))
 
 
 def get_vimeo(html_content):
@@ -87,6 +91,8 @@ def get_vimeo(html_content):
     if not src.startswith('https:'):
       src = 'https:' + src
     return src
+  else:
+    return soup
 
 
 if __name__ == '__main__':
